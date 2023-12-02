@@ -12,12 +12,32 @@ pipeline {
                 CleanWS()
             }
         }
-    }
-
-    stage('Checkout from SCM') {
-        steps {
-            git branch: 'main', credentials: 'github', url: ''
-        }
-    }
     
+
+        stage('Checkout from SCM') {
+            steps {
+                git branch: 'main', credentials: 'github', url: 'https://github.com/SoftwareDevDeveloper/register-app'
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                sh "mvn clean package"
+            }
+        }
+
+
+        stage("Test Application") {
+            steps {
+                sh "mvn test"
+            }
+        }
+
+        // stage("") {
+        //     steps {
+
+        //     }
+        // }
+
+    }
 }
