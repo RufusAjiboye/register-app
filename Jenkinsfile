@@ -7,6 +7,9 @@ pipeline {
     }
 
     environment {
+            ACCCESS_KEY_ID = credentials ('ACCESS_KEY_ID')
+            SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
+            
             hub_username = credentials ('hub-username')
             hub_password = credentials ('hub-password')
             // APP_NAME = "pipeline10"
