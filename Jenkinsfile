@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'jenkins-Agent'}
+    //agent {label 'jenkins-Agent'}
     agent any
     tools {
         jdk 'Java17'
@@ -103,6 +103,5 @@ pipeline {
         failure {
             echo 'Build is not successful'
         }
-    }
-    
+    }   
 }
