@@ -8,10 +8,10 @@ pipeline {
 
     environment {
         APP_NAME = "pipeline10"
-        RELEASE = '1.0.0'
-        DOCKERHUB_USER = '02271589'
-        DOCKERHUB_PASS = 'dockerhub'
-        IMAGE_NAME = ${DOCKERHUB_USER}" + "/" + "${APP_NAME}
+        RELEASE = "1.0.0"
+        DOCKERHUB_USER = "02271589"
+        DOCKERHUB_PASS = "dockerhub"
+        IMAGE_NAME = "${DOCKERHUB_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
