@@ -11,9 +11,8 @@ pipeline {
         RELEASE = '1.0.0'
         DOCKERHUB_USER = '02271589'
         DOCKERHUB_PASS = 'dockerhub'
-        hub_username = credentials ('hub-username')
-        hub_password = credentials ('hub-password')
-        version = "v3"
+        IMAGE_NAME = ${DOCKERHUB_USER}" + "/" + "${APP_NAME}
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
     stages {
@@ -34,7 +33,6 @@ pipeline {
                 sh "mvn clean package"
             }
         }
-
 
         stage("Test Application") {
             steps {
@@ -60,39 +58,29 @@ pipeline {
             }
         }
 
+        stage("Build and push Image") {
+            steps{
+                script{
+                    docker.withRegistry('', DOCKERHUB_PASS) {
+                         docker_image = docker.build "${IMAGE_NAME}"
+                    }
+
+                    docker.withRegistry('',DOCKERHUB_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
+            }
+        }
+
+
+
+
         // stage("Build and Push Image") {
         //     steps {
         //         sh 'docker build -t 02271589/SonarQube'
         //     }
         // }
-
-        stage('Build the docker image') {
-            steps  {
-                sh '''
-                    docker build -t 02271589/sonarqube:$version .
-                '''
-            }
-        }
-
-        stage('Run docker image') {
-            steps  { 
-                sh 'docker run -d -p 80:5000 02271589/sonarqube:$version'
-            }
-        }
-
-        stage ('login to the image repo') {
-            steps {
-                  echo "login to docker hub repo"
-                  sh 'docker login -u $hub_username -p $hub_password'
-            }
-        }
-
-        stage ('publish image to dockerhub') {
-            steps {
-                  echo "Push image to the Image repo"
-                  sh 'docker push 02271589/sonarqube:$version'     
-            }
-        }  
     }
 
     post {
