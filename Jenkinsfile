@@ -6,13 +6,20 @@ pipeline {
         maven 'Maven3'
     }
 
+    environment {
+        APP_NAME = "pipeline10"
+        RELEASE = '1.0.0'
+        DOCKERHUB_USER = '02271589'
+        DOCKERHUB_PASS = 'dockerhub'
+        version = "v1"
+    }
+
     stages {
         stage('Cleanup workspace') {
             steps {
                 cleanWs()
             }
         }
-    
 
         stage('Checkout from SCM') {
             steps {
@@ -48,6 +55,15 @@ pipeline {
                 script {
                     waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
                 }
+            }
+        }
+
+        stage("Build and Push Image") {
+            steps {
+                sh '''
+                docker build -t 02271589/JenkinsSonarQube:$version .
+                docker push 02271589/JenkinsSonarQube:$version
+                '''
             }
         }
     }
