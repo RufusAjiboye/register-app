@@ -11,6 +11,9 @@ pipeline {
         RELEASE = '1.0.0'
         DOCKERHUB_USER = '02271589'
         DOCKERHUB_PASS = 'dockerhub'
+        hub_username = credentials ('hub-username')
+        hub_password = credentials ('hub-password')
+        version = "v3"
     }
 
     stages {
@@ -57,10 +60,53 @@ pipeline {
             }
         }
 
-        stage("Build and Push Image") {
-            steps {
-                sh 'docker build -t 02271589/SonarQube'
+        // stage("Build and Push Image") {
+        //     steps {
+        //         sh 'docker build -t 02271589/SonarQube'
+        //     }
+        // }
+
+        stage('Build the docker image') {
+            steps  {
+                sh '''
+                    docker build -t 02271589/sonarqube:$version .
+                '''
             }
         }
+
+        stage('Run docker image') {
+            steps  { 
+                sh 'docker run -d -p 80:5000 02271589/sonarqube:$version'
+            }
+        }
+
+        stage ('login to the image repo') {
+            steps {
+                  echo "login to docker hub repo"
+                  sh 'docker login -u $hub_username -p $hub_password'
+            }
+        }
+
+        stage ('publish image to dockerhub') {
+            steps {
+                  echo "Push image to the Image repo"
+                  sh 'docker push 02271589/sonarqube:$version'     
+            }
+        }  
     }
+
+    post {
+        always {
+            deleteDir()
+        }
+
+         success {
+            echo 'Build is successful'
+        }
+
+        failure {
+            echo 'Build is not successful'
+        }
+    }
+    
 }
