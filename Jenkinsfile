@@ -7,12 +7,14 @@ pipeline {
     }
 
     environment {
-            APP_NAME = "pipeline10"
-            RELEASE = "1.0.0"
-            DOCKERHUB_USER = "02271589"
-            DOCKERHUB_PASS = "dockerhub"
-            IMAGE_NAME = "${DOCKERHUB_USER}" + "/" + "${APP_NAME}"
-            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+            hub_username = credentials ('hub-username')
+            hub_password = credentials ('hub-password')
+            // APP_NAME = "pipeline10"
+            // RELEASE = "1.0.0"
+            // DOCKERHUB_USER = "02271589"
+            // DOCKERHUB_PASS = "dockerhub"
+            // IMAGE_NAME = "${DOCKERHUB_USER}" + "/" + "${APP_NAME}"
+            // IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
     stages {
@@ -40,6 +42,7 @@ pipeline {
             }
         }
 
+
         stage("SonarQube Anlysis") {
             steps {
                 script {
@@ -58,27 +61,36 @@ pipeline {
             }
         }
 
-        stage("Build and push Image") {
-            steps{
-                script{
-                    docker.withRegistry('', DOCKERHUB_PASS) {
-                         docker_image = docker.build "${IMAGE_NAME}"
-                    }
+        // stage("Build and push Image") {
+        //     steps{
+        //         script{
+        //             docker.withRegistry('', DOCKERHUB_PASS) {
+        //                  docker_image = docker.build "${IMAGE_NAME}"
+        //             }
 
-                    docker.withRegistry('',DOCKERHUB_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
-                    }
-                }
+        //             docker.withRegistry('',DOCKERHUB_PASS) {
+        //                 docker_image.push("${IMAGE_TAG}")
+        //                 docker_image.push('latest')
+        //             }
+        //         }
+        //     }
+        // }
+
+
+        stage("Build docker Image") {
+             steps {
+                 sh 'docker build -t 02271589/SonarQube'
             }
         }
 
 
-        // stage("Build and Push Image") {
-        //     steps {
-        //         sh 'docker build -t 02271589/SonarQube'
-        //     }
-        // }
+        stage("Push Docker Image") {
+             steps {
+                 sh 'docker push 02271589/SonarQube'
+            }
+        }
+
+
     }
 
     post {
@@ -86,7 +98,7 @@ pipeline {
             deleteDir()
         }
 
-         success {
+        success {
             echo 'Build is successful'
         }
 
