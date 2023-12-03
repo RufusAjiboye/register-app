@@ -11,7 +11,6 @@ pipeline {
         RELEASE = '1.0.0'
         DOCKERHUB_USER = '02271589'
         DOCKERHUB_PASS = 'dockerhub'
-        version = "v1"
     }
 
     stages {
@@ -60,10 +59,7 @@ pipeline {
 
         stage("Build and Push Image") {
             steps {
-                sh '''
-                docker build -t 02271589/JenkinsSonarQube:$version .
-                docker push 02271589/JenkinsSonarQube:$version
-                '''
+                sh 'docker build -t 02271589/SonarQube'
             }
         }
     }
