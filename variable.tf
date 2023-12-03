@@ -22,6 +22,31 @@ variable "ec2_instance_type" {
   default     = "t2.medium"
 }
 
+variable "DB-engine" {
+  description = "This variable will manage the name of the DB engine"
+  type        = string
+  default     = "postgres"
+}
+
+variable "DB-instance_class" {
+  description = "This variable will manage the instance type for DB"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "engine_version" {
+  description = "This variable will manage the database version for DB set up"
+  type        = string
+  default     = "15.3"
+}
+
+variable "identifier" {
+  description = "This variable will manage the database identifier for DB set up"
+  type        = string
+  default     = "cicd-database"
+}
+
+
 variable "certificate_arn" {
   description = "This variable will manage the HTPPS listener cert arn"
   type        = string

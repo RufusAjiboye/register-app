@@ -33,11 +33,14 @@ pipeline {
             }
         }
 
-        // stage("") {
-        //     steps {
-
-        //     }
-        // }
-
+        stage("SonarQube Anlysis") {
+            steps {
+                script {
+                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                    sh "mvn sonar:sonar"
+                    }
+                }
+            }
+        }
     }
 }
