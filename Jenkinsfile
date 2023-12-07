@@ -9,7 +9,7 @@ pipeline {
     environment {
             ACCCESS_KEY_ID = credentials ('ACCESS_KEY_ID')
             SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
-            
+
             hub_username = credentials ('hub-username')
             hub_password = credentials ('hub-password')
             // APP_NAME = "pipeline10"
@@ -64,34 +64,34 @@ pipeline {
             }
         }
 
-        // stage("Build and push Image") {
-        //     steps{
-        //         script{
-        //             docker.withRegistry('', DOCKERHUB_PASS) {
-        //                  docker_image = docker.build "${IMAGE_NAME}"
-        //             }
+        stage("Build and push Image") {
+            steps{
+                script{
+                    docker.withRegistry('', DOCKERHUB_PASS) {
+                         docker_image = docker.build "${IMAGE_NAME}"
+                    }
 
-        //             docker.withRegistry('',DOCKERHUB_PASS) {
-        //                 docker_image.push("${IMAGE_TAG}")
-        //                 docker_image.push('latest')
-        //             }
-        //         }
+                    docker.withRegistry('',DOCKERHUB_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
+            }
+        }
+
+
+        // stage("Build docker Image") {
+        //      steps {
+        //          sh 'docker build -t 02271589/SonarQube'
         //     }
         // }
 
 
-        stage("Build docker Image") {
-             steps {
-                 sh 'docker build -t 02271589/SonarQube'
-            }
-        }
-
-
-        stage("Push Docker Image") {
-             steps {
-                 sh 'docker push 02271589/SonarQube'
-            }
-        }
+        // stage("Push Docker Image") {
+        //      steps {
+        //          sh 'docker push 02271589/SonarQube'
+        //     }
+        // }
     }
 
     post {
