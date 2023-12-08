@@ -11,7 +11,6 @@ resource "aws_instance" "appnode1" {
   }
 }
 
-
 resource "aws_instance" "appnode3" {
   ami                         = var.ubuntu_ami
   instance_type               = var.ec2_instance_type

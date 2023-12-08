@@ -64,20 +64,20 @@ pipeline {
             }
         }
 
-        stage("Build and push Image") {
-            steps{
-                script{
-                    docker.withRegistry('', DOCKERHUB_PASS) {
-                         docker_image = docker.build "${IMAGE_NAME}"
-                    }
+        // stage("Build and push Image") {
+        //     steps{
+        //         script{
+        //             docker.withRegistry('', DOCKERHUB_PASS) {
+        //                  docker_image = docker.build "${IMAGE_NAME}"
+        //             }
 
-                    docker.withRegistry('',DOCKERHUB_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
-                    }
-                }
-            }
-        }
+        //             docker.withRegistry('',DOCKERHUB_PASS) {
+        //                 docker_image.push("${IMAGE_TAG}")
+        //                 docker_image.push('latest')
+        //             }
+        //         }
+        //     }
+        // }
 
 
         // stage("Build docker Image") {
