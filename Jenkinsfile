@@ -10,12 +10,12 @@ pipeline {
             ACCCESS_KEY_ID = credentials ('ACCESS_KEY_ID')
             SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
 
-            hub_username = credentials ('DOCKERHUB_USER')
-            hub_password = credentials ('DOCKERHUB_PASS')
+            // hub_username = credentials ('DOCKERHUB_USER')
+            // hub_password = credentials ('DOCKERHUB_PASS')
             APP_NAME = "pipeline10"
             RELEASE = "1.0.0"
-            // DOCKERHUB_USER = "02271589"
-            // DOCKERHUB_PASS = "DOCKERHUB_PASS"
+            DOCKERHUB_USER = "02271589"
+            DOCKERHUB_PASS = "DOCKERHUB_PASS"
             IMAGE_NAME = "${DOCKERHUB_USER}" + "/" + "${APP_NAME}"
             IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
