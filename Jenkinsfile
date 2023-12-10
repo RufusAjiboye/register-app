@@ -7,16 +7,16 @@ pipeline {
     }
 
     environment {
-            ACCCESS_KEY_ID = credentials ('ACCESS_KEY_ID')
-            SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
-
+            // ACCCESS_KEY_ID = credentials ('ACCESS_KEY_ID')
+            // SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
             // hub_username = credentials ('DOCKERHUB_USER')
             // hub_password = credentials ('DOCKERHUB_PASS')
-            APP_NAME = "pipeline10"
+
+            APP_NAME = "register-app-pipeline"
             RELEASE = "1.0.0"
-            DOCKERHUB_USER = "02271589"
-            DOCKERHUB_PASS = "DOCKERHUB_PASS"
-            IMAGE_NAME = "${DOCKERHUB_USER}" + "/" + "${APP_NAME}"
+            DOCKER_USER = "02271589"
+            DOCKER_PASS = 'dockerhub'
+            IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
             IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
@@ -64,20 +64,30 @@ pipeline {
             }
         }
 
-        stage("Build and push Image") {
-            steps{
-                script{
-                    docker.withRegistry('', DOCKERHUB_PASS) {
-                         docker_image = docker.build "${IMAGE_NAME}"
+        stage("Build & Push Docker Image") {
+            steps {
+                script {
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
                     }
 
-                    docker.withRegistry('',DOCKERHUB_PASS) {
+                    docker.withRegistry('',DOCKER_PASS) {
                         docker_image.push("${IMAGE_TAG}")
                         docker_image.push('latest')
                     }
                 }
             }
-        }
+       }
+
+        stage("Trigger CD Pipeline") {
+            steps {
+                script {
+                    sh "curl -v -k --user clouduser:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-52-213-251-235.eu-west-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'"
+                }
+            }
+       }
+
+    
 
 
         // stage("Build docker Image") {
