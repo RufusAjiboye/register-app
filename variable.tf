@@ -46,7 +46,6 @@ variable "identifier" {
   default     = "cicd-database"
 }
 
-
 variable "certificate_arn" {
   description = "This variable will manage the HTPPS listener cert arn"
   type        = string

@@ -87,7 +87,6 @@ pipeline {
             }
        }
 
-    
         // stage("Build docker Image") {
         //      steps {
         //          sh 'docker build -t 02271589/SonarQube'
