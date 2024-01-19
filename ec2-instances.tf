@@ -33,6 +33,6 @@ resource "aws_instance" "appnode3" {
 #   associate_public_ip_address = true
 
 #   tags = {
-#     Name = "BootStrap_Servers"
+#     Name = "BootStrap_Server"
 #   }
 # }
