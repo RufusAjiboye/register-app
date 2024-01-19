@@ -28,7 +28,7 @@ resource "aws_security_group" "database_security_group" {
   }
 }
 
-# create subnet group for the rds instance
+# create subnet group for rds instance
 resource "aws_db_subnet_group" "database_subnet_group" {
   name        = "database_subnet"
   subnet_ids  = [aws_subnet.subnet_public1.id, aws_subnet.subnet_public2.id]
