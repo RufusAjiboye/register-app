@@ -71,7 +71,7 @@ resource "aws_eip" "elastic_ip_nat_gateway" {
   }
 }
 
-########private network#########
+########private networks#########
 resource "aws_subnet" "subnet_private1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.3.0/24"

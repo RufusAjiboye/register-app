@@ -35,6 +35,6 @@ resource "aws_security_group" "cicd_workflow" {
   }
 
   tags = {
-    Name = "CI/CD COMPLETE"
+    Name = "CI/CD complete"
   }
 }

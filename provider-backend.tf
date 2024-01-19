@@ -8,7 +8,7 @@ terraform {
 
   backend "s3" {
     bucket = "techbleats-terraform-state-files"
-    key    = "hrapp/terraform.tfstate"
+    key    = "app/terraform.tfstate"
     region = "eu-west-1"
   }
 
