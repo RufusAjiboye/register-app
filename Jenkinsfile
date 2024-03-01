@@ -75,10 +75,10 @@ pipeline {
 
         stage('Run docker Image') {
             steps {
-                sh "docker run -d -p 8072:80 02271589/register-app-pipeline:latest"
+                sh "docker run -d -p 8073:80 02271589/register-app-pipeline:latest"
             }
         }
-        
+
         // stage('TRIVY FS Scan') {
         //     steps {
         //         sh "trivy fs . > trivyfs.txt"
