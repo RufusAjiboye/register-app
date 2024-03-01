@@ -83,7 +83,7 @@ pipeline {
             steps {
                 sh "trivy fs . > trivyfs.txt"
             }
-        }ec2-3-252-138-197.eu-west-1.compute.amazonaws.com
+        }
 
         stage("Trigger CD Pipeline") {
             steps {
