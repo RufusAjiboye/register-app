@@ -10,7 +10,7 @@ pipeline {
         RELEASE = "1.0.0"
         DOCKER_USER = "02271589"
         DOCKER_PASS = "jenkins-dockerhub-token"
-        IMAGE_NAME = "${DOCKER_USER"}" + "/" + "${APP_NAME}"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMER}"
     }
 
