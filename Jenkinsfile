@@ -5,14 +5,14 @@ pipeline {
         maven 'Maven3'
     }
 
-    // environment {
-    //     APP_NAME = "register-app-pipeline"
-    //     RELEASE = "1.0.0"
-    //     DOCKER_USER = "02271589"
-    //     DOCKER_PASS = "jenkins-dockerhub-token"
-    //     IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-    //     IMAGE_TAG = "${RELEASE}-${BUILD_NUMER}"
-    // }
+    environment {
+        APP_NAME = "register-app-pipeline"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "02271589"
+        DOCKER_PASS = "jenkins-dockerhub-token"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMER}"
+    }
 
     stages{
         stage("CleanUp Workspace") {
@@ -57,34 +57,40 @@ pipeline {
             }
         }
 
-        // stage("Build docker Image") {
-        //     steps {
-        //         script {
-        //             docker.withRegistry('',DOCKER_PASS) {
-        //                 docker_image = docker.build "${IMAGE_NAME}"
-        //             }
-
-        //             docker.withRegistry('',DOCKER_PASS) {
-        //                 docker_image.push("${IMAGE_TAG}")
-        //                 docker_image.push('latest')
-        //             }
-        //         }
-        //     }
-        // }
-
         stage("Build docker Image") {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'jenkins-dockerhub-token', toolName: 'docker') {
-                        sh '''
-                        sudo docker build -t registerapp .
-                        sudo docker tag registerapp 02271589/registerapp:latest
-                        sudo docker push 02271589/registerapp:latest
-                        '''
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
+
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
                     }
                 }
             }
         }
+
+        stage('Run docker Image') {
+            steps {
+                sh "docker run --name myapp -d -p 8090:80 02271589/register-app-pipeline:latest"
+            }
+        }
+
+        // stage("Build docker Image") {
+        //     steps {
+        //         script {
+        //             withDockerRegistry(credentialsId: 'jenkins-dockerhub-token', toolName: 'docker') {
+        //                 sh '''
+        //                 sudo docker build -t registerapp .
+        //                 sudo docker tag registerapp 02271589/registerapp:latest
+        //                 sudo docker push 02271589/registerapp:latest
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 
