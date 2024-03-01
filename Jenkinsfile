@@ -12,6 +12,7 @@ pipeline {
         DOCKER_PASS = "jenkins-dockerhub-token"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMER}"
+        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
 
     stages{
@@ -75,6 +76,21 @@ pipeline {
         stage('Run docker Image') {
             steps {
                 sh "docker run --name myapp -d -p 8090:80 02271589/register-app-pipeline:latest"
+            }
+        }
+
+        stage('TRIVY FS Scan') {
+            steps {
+                sh "trivy fs . > trivyfs.txt"
+            }
+        }ec2-3-252-138-197.eu-west-1.compute.amazonaws.com
+
+        stage("Trigger CD Pipeline") {
+            steps {
+                script {
+                    sh "curl -v -k --user Admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-3-252-138-197.eu-west-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'"
+
+                }
             }
         }
 
