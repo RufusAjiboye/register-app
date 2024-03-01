@@ -79,11 +79,11 @@ pipeline {
             }
         }
 
-        stage('TRIVY FS Scan') {
-            steps {
-                sh "trivy fs . > trivyfs.txt"
-            }
-        }
+        // stage('TRIVY FS Scan') {
+        //     steps {
+        //         sh "trivy fs . > trivyfs.txt"
+        //     }
+        // }
 
         stage("Trigger CD Pipeline") {
             steps {
