@@ -75,7 +75,7 @@ pipeline {
 
         stage('Run docker Image') {
             steps {
-                sh "docker run -d -p 8070:80 02271589/register-app-pipeline:latest"
+                sh "docker run -d -p 8071:80 02271589/register-app-pipeline:latest"
             }
         }
 
