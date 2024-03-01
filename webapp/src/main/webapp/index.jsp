@@ -33,6 +33,6 @@
 
    <h1> Thank You </h1>
    <br>
-   <h1> This is the first Complete CI/CD Project. I am Excited. Thank you </h1>
+   <h1> This is our first Complete CI/CD Project. I am Excited. Thank you </h1>
    
 </form>
