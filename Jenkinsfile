@@ -14,17 +14,13 @@ pipeline {
 
         stage("Check out from SCM") {
             steps {
-                steps {
-                    git branch: 'main', credentialsId: 'github', url: 'https://github.com/SoftwareDevDeveloper/register-app'
-                }
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/SoftwareDevDeveloper/register-app'
             }
         }
 
         stage("Build Application") {
             steps {
-                steps {
-                    sh "mvn clean package"
-                }
+                sh "mvn clean package"
             }
         }
 
