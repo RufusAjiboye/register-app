@@ -31,7 +31,7 @@
     <p>Already have an account? <a href="#">Sign in</a>.</p>
   </div>
 
-   <h1> Thank You there </h1>
+   <h1> Thanks </h1>
    <br>
    <h1> This is our first Complete CI/CD Project. I am Excited. Thank you </h1>
    
