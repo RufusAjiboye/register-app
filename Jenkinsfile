@@ -73,6 +73,20 @@ pipeline {
             }
         }
 
+        // stage("Build docker Image") {
+        //     steps {
+        //         script {
+        //             withDockerRegistry(credentialsId: 'jenkins-dockerhub-token', toolName: 'docker') {
+        //                 sh '''
+        //                 sudo docker build -t registerapp .
+        //                 sudo docker tag registerapp 02271589/registerapp:latest
+        //                 sudo docker push 02271589/registerapp:latest
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
+
         stage('Run docker Image') {
             steps {
                 sh "docker run -d -p 8011:80 02271589/register-app-pipeline:latest"
@@ -93,20 +107,6 @@ pipeline {
                 }
             }
         }
-
-        // stage("Build docker Image") {
-        //     steps {
-        //         script {
-        //             withDockerRegistry(credentialsId: 'jenkins-dockerhub-token', toolName: 'docker') {
-        //                 sh '''
-        //                 sudo docker build -t registerapp .
-        //                 sudo docker tag registerapp 02271589/registerapp:latest
-        //                 sudo docker push 02271589/registerapp:latest
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
     }
 }
 
