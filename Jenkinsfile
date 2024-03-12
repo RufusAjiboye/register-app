@@ -11,7 +11,7 @@ pipeline {
         DOCKER_PASS = "dockerhub-token"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMER}"
-        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+       // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
     }
 
     stages {
