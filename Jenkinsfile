@@ -92,8 +92,8 @@ pipeline {
         stage('Cleanup Artifacts') {
             steps {
                 script {
-                    sh "docker rm ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker rm ${IMAGE_NAME}:latest"
+                    sh "docker rm -rf ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rm -rf ${IMAGE_NAME}:latest"
                 }
             }
         }
