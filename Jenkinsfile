@@ -26,7 +26,7 @@ pipeline {
 
         stage('Test Application') {
             steps {
-                sh "Test Application"
+                sh "mvn test"
             }
         }
     }
