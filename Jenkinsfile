@@ -75,7 +75,7 @@ pipeline {
 
         stage('Run Docker Image') {
             steps {
-                sh "docker run -d -p 70:80 02271589/register-app-job:latest"
+                sh "docker run -d -p 71:80 02271589/register-app-job:latest"
             }
         }
 
@@ -92,8 +92,8 @@ pipeline {
         stage('Cleanup Artifacts') {
             steps {
                 script {
-                    sh "docker rm -rf ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker rm -rf ${IMAGE_NAME}:latest"
+                   // sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rmi ${IMAGE_NAME}:latest"
                 }
             }
         }
