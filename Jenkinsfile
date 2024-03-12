@@ -37,7 +37,8 @@ pipeline {
                 sh "mvn test"
             }
         }
-
+        
+        //Sonarqube will scan the code for vulnerabilities and bugs
         stage('Sonarqube Analysis') {
             steps{
                 script {
@@ -70,5 +71,21 @@ pipeline {
                 }
             }
         }
+
+        stage('Run Docker Image') {
+            steps {
+                sh "docker run -d -p 80:80 02271589/register-app-job:latest"
+            }
+        }
+
+
+        // Trivy will Scan the Docker Image
+        // stage('Trivy Scan') {
+        //     steps{
+        //         scripts {
+        //             sh (docker run -v)
+        //         }
+        //     }
+        // }
     }
 }
