@@ -7,26 +7,36 @@ pipeline {
 
     stages {
         stage('Cleanup Workspace') {
-            steps {
+            steps{
                 cleanWs()
             }
         }
 
         stage('Checkout from SCM') {
-            steps {
+            steps{
                 git branch: 'main', credentialsId: 'github', url: 'https://github.com/SoftwareDevDeveloper/register-app'
             }
         }
 
         stage('Build Application') {
-            steps {
+            steps{
                 sh "mvn clean package"
             }
         }
 
         stage('Test Application') {
-            steps {
+            steps{
                 sh "mvn test"
+            }
+        }
+
+        stage ('Sonarqube Analysis') {
+            steps{
+                script {
+                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                    sh "mvn sonar:sonar"
+                }
+
             }
         }
     }
