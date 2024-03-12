@@ -11,6 +11,7 @@ pipeline {
         DOCKER_PASS = "dockerhub"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMER}"
+        JENKINS_API_TOKEN = credentials{"JENKINS_API_TOKEN"}
     }
 
     stages {
@@ -74,21 +75,21 @@ pipeline {
 
         stage('Run Docker Image') {
             steps {
-                sh "docker run -d -p 81:80 02271589/register-app-job:latest"
+                sh "docker run -d -p 80:80 02271589/register-app-job:latest"
             }
         }
 
 
         //Trivy will Scan the Docker Image
-        stage('Trivy Scan') {
-            steps{
-                scripts {
-                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image 02271589/register-app-job:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
-                }
-            }
-        }
+        // stage('Trivy Scan') {
+        //     steps{
+        //         scripts {
+        //             sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image 02271589/register-app-job:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+        //         }
+        //     }
+        // }
 
-        stage('Cleanup Artifact') {
+        stage('Cleanup Artifacts') {
             steps {
                 script {
                     sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
@@ -96,5 +97,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Trigger CD Pipeline') {
+            steps {
+                script {
+                     sh "curl -v -k --user Admin:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-3-253-129-55.eu-west-1.compute.amazonaws.com:8080/job/gitops-Register-APP-CI/buildWithParameters?token=gitops-token'"
+                }
+            }
+        } 
     }
 }
