@@ -81,13 +81,13 @@ pipeline {
 
 
         //Trivy will Scan the Docker Image
-        // stage('Trivy Scan') {
-        //     steps{
-        //         scripts {
-        //             sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image 02271589/register-app-job:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
-        //         }
-        //     }
-        // }
+        stage('Trivy Scan') {
+            steps{
+                scripts {
+                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image 02271589/register-app-job:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+                }
+            }
+        }
 
         stage('Cleanup Artifacts') {
             steps {
