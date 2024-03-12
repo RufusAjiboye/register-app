@@ -74,7 +74,7 @@ pipeline {
 
         stage('Run Docker Image') {
             steps {
-                sh "docker run -d -p 80:80 02271589/register-app-job:latest"
+                sh "docker run -d -p 81:80 02271589/register-app-job:latest"
             }
         }
 
@@ -84,6 +84,15 @@ pipeline {
             steps{
                 scripts {
                     sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image 02271589/register-app-job:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+                }
+            }
+        }
+
+        stage('Cleanup Artifact') {
+            steps {
+                script {
+                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rmi ${IMAGE_NAME}:latest"
                 }
             }
         }
